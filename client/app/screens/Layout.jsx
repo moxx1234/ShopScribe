@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { useAuth } from '../context/UserProvider'
 import Loading from './Loading'
 import Navigator from './Navigator'
+import Shop from './shop/Shop'
 
 const Stack = createNativeStackNavigator()
 
@@ -17,7 +18,10 @@ const Layout = () => {
 					!isLoading ?
 						(
 							isSignedIn ?
-								<Stack.Screen name='Navigator' options={{ headerShown: false }} component={Navigator} />
+								<>
+									<Stack.Screen name='Navigator' options={{ headerShown: false }} component={Navigator} />
+									<Stack.Screen name='Market' options={{ title: 'Магазин' }} component={Shop} />
+								</>
 								:
 								<>
 									<Stack.Screen name='SignIn' component={SignInScreen} options={{ title: 'Вход' }} />

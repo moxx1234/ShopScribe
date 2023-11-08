@@ -2,7 +2,7 @@ import { DrawerContentScrollView, createDrawerNavigator, DrawerItemList, DrawerI
 import Main from './main/Main'
 import { useAuth, useAuthUpdate } from '../context/UserProvider'
 import { authorizeUser, endUserSession } from '../../api/auth'
-import AdminControls from './AdminControls'
+import AdminControls from './admin/AdminControls'
 
 const Drawer = createDrawerNavigator()
 

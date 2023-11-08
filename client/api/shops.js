@@ -1,0 +1,33 @@
+import { REACT_APP_DEV_BACKEND_URL as BACK_URL } from '@env'
+import { getToken } from './auth'
+
+const headers = { 'Content-Type': 'application/json' }
+
+export const addShop = async (shopInfo) => {
+	const userToken = await getToken() || ''
+	const URL = `${BACK_URL}/shops/add`
+	const body = JSON.stringify(shopInfo)
+	return await fetch(URL, {
+		method: 'POST',
+		headers: { ...headers, 'Authorization': 'Bearer ' + userToken },
+		body
+	})
+		.then(async (response) => {
+			if (!response.ok) throw await response.json()
+			return response.json()
+		})
+		.catch(error => { throw error })
+}
+
+export const getShops = async () => {
+	const URL = `${BACK_URL}/shops/all`
+	return await fetch(URL, {
+		method: 'GET',
+		headers
+	})
+		.then(async (response) => {
+			if (!response.ok) throw await response.json()
+			return response.json()
+		})
+		.catch(error => { throw error })
+}

@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import AuthForm from './AuthForm'
+import SignInForm from './SignInForm'
 
 const SignInScreen = ({ navigation }) => {
 	const navigate = (page) => {
@@ -7,7 +7,8 @@ const SignInScreen = ({ navigation }) => {
 	}
 	return (
 		<View style={styles.container}>
-			<AuthForm title='Войдите, чтобы продолжить!' formType='SignIn' />
+			<Text style={styles.title}>Войдите, чтобы продолжить!</Text>
+			<SignInForm />
 			<View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', marginTop: 30 }}>
 				<Text style={{ fontSize: 18 }}>Нет аккаунта?</Text>
 				<TouchableOpacity onPress={() => navigate('SignUp')}>
@@ -22,6 +23,11 @@ const styles = StyleSheet.create({
 	container: {
 		paddingTop: 20,
 		paddingHorizontal: 10
+	},
+	title: {
+		fontSize: 36,
+		fontWeight: 'bold',
+		marginBottom: 20,
 	},
 	link: {
 		color: 'blue',

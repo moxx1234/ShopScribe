@@ -1,10 +1,10 @@
 import { View, StyleSheet } from 'react-native'
-import AuthForm from './AuthForm'
+import SignUpForm from './SignUpForm'
 
 const SignUpScreen = () => {
 	return (
 		<View style={styles.container}>
-			<AuthForm title='Регистрация' formType='SignUp' />
+			<SignUpForm />
 		</View>
 	)
 }

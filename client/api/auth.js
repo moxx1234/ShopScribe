@@ -21,7 +21,7 @@ export const authenticateUser = async (action, userData) => {
 		.catch(error => { throw error })
 }
 
-const getToken = async () => {
+export const getToken = async () => {
 	return await SecureStore.getItemAsync('token')
 		.catch(() => {
 			alert('Something went wrong while authorization!')

@@ -1,6 +1,6 @@
 import { Text } from 'react-native'
-import { authorizeUser } from '../../api/auth'
-import { useAuthUpdate } from '../context/UserProvider'
+import { authorizeUser } from '../../../api/auth'
+import { useAuthUpdate } from '../../context/UserProvider'
 import { useEffect } from 'react'
 
 export const authorizeAdmin = async () => {
@@ -10,7 +10,7 @@ export const authorizeAdmin = async () => {
 				throw { message: 'Unauthorized attempt to control panel!' }
 			}
 		})
-		.catch(error => error)
+		.catch(error => error.message || error)
 }
 
 const AdminControls = ({ navigation }) => {
@@ -18,7 +18,7 @@ const AdminControls = ({ navigation }) => {
 
 	useEffect(() => {
 		authorizeAdmin().catch(error => {
-			console.error(error.message)
+			console.error(error)
 			navigation.navigate('Home')
 			updateUser({ type: 'checkAdmin', setAdmin: false })
 		})

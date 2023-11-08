@@ -34,6 +34,24 @@ const User = sequelize.define('user', {
 	}
 })
 
+const Shop = sequelize.define('shop', {
+	id: {
+		type: DataTypes.UUID,
+		defaultValue: DataTypes.UUIDV4,
+		primaryKey: true,
+		unique: 'id'
+	},
+	name: {
+		type: DataTypes.STRING,
+		allowNull: true,
+		unique: 'name'
+	},
+	category: {
+		type: DataTypes.STRING,
+		allowNull: false,
+	},
+})
+
 sequelize.sync({ alter: true }).then(() => {
 	console.log('tables had been synchronised')
 }).catch((err) => console.log('table sync error', err))
@@ -44,4 +62,4 @@ useBcrypt(User, {
 	compare: 'authenticate'
 })
 
-module.exports = { sequelize, User }
+module.exports = { User, Shop }
