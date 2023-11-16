@@ -6,10 +6,13 @@ import InputGroup from '../form/InputGroup'
 import { addShop } from '../../../api/shops'
 
 const AddShopForm = ({ onModalClose = null }) => {
-	const initialValues = { name: '', category: '' }
+	const initialValues = { name: '', owner: '', phone: '', address: '', remark: '' }
 
 	const schema = yup.object({
-		name: yup.string().trim().required('Введите название магазина')
+		name: yup.string().trim().required('Введите название магазина'),
+		owner: yup.string().trim().required('Введите имя владельца'),
+		phone: yup.number().required('Введите номер телефона'),
+		address: yup.string().trim().required('Введите адрес')
 	})
 
 	const handleSubmit = (values, onSubmitProps) => {
@@ -21,6 +24,7 @@ const AddShopForm = ({ onModalClose = null }) => {
 			})
 			.catch(error => {
 				if (error.field) return onSubmitProps.setErrors({ [error.field]: [error.message] })
+				if (error.message) return alert(error)
 				alert(error)
 			})
 			.finally(() => { onSubmitProps.setSubmitting(false) })
@@ -45,14 +49,44 @@ const AddShopForm = ({ onModalClose = null }) => {
 						touched={touched.name}
 					/>
 					<InputGroup
-						name='category'
-						label='Категория'
+						name='owner'
+						label='Имя владельца'
 						type='text'
 						onChange={handleChange}
 						onBlur={handleBlur}
-						value={values.category}
-						error={errors.category}
-						touched={touched.category}
+						value={values.owner}
+						error={errors.owner}
+						touched={touched.owner}
+					/>
+					<InputGroup
+						name='phone'
+						label='Номер телефона'
+						type='phone'
+						onChange={handleChange}
+						onBlur={handleBlur}
+						value={values.phone}
+						error={errors.phone}
+						touched={touched.phone}
+					/>
+					<InputGroup
+						name='address'
+						label='Адрес'
+						type='text'
+						onChange={handleChange}
+						onBlur={handleBlur}
+						value={values.address}
+						error={errors.address}
+						touched={touched.address}
+					/>
+					<InputGroup
+						name='remark'
+						label='Примечание'
+						type='textarea'
+						onChange={handleChange}
+						onBlur={handleBlur}
+						value={values.remark}
+						error={errors.remark}
+						touched={touched.remark}
 					/>
 					<SubmitButton title='Создать' onSubmit={handleSubmit} disabledProps={[isSubmitting, isValid, touched]} />
 				</View>

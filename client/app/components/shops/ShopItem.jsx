@@ -1,15 +1,17 @@
 import { Text, View, Pressable, StyleSheet } from 'react-native'
+import { useTheme } from '../../context/ThemeProvider'
 
 const ShopItem = ({ onChoice, name, category }) => {
+	const { themeStyles } = useTheme()
 
 	return (
 		<Pressable onPress={onChoice}>
-			<View style={styles.row}>
+			<View style={[styles.row, themeStyles.border]}>
 				<View style={styles.column}>
-					<Text style={[styles.text, styles.name]}>{name}</Text>
+					<Text style={[styles.text, styles.name, themeStyles.text]}>{name}</Text>
 				</View>
 				<View style={styles.column}>
-					<Text style={styles.text}>{category}</Text>
+					<Text style={[styles.text, themeStyles.text]}>{category}</Text>
 				</View>
 			</View>
 		</Pressable>

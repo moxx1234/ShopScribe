@@ -1,16 +1,16 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import SignInForm from './SignInForm'
+import { useTheme } from '../../context/ThemeProvider'
 
 const SignInScreen = ({ navigation }) => {
-	const navigate = (page) => {
-		navigation.navigate(page)
-	}
+	const navigate = (page) => navigation.navigate(page)
+	const { themeStyles } = useTheme()
 	return (
 		<View style={styles.container}>
-			<Text style={styles.title}>Войдите, чтобы продолжить!</Text>
+			<Text style={[styles.title, themeStyles.text]}>Войдите, чтобы продолжить!</Text>
 			<SignInForm />
 			<View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', marginTop: 30 }}>
-				<Text style={{ fontSize: 18 }}>Нет аккаунта?</Text>
+				<Text style={[{ fontSize: 18 }, themeStyles.text]}>Нет аккаунта?</Text>
 				<TouchableOpacity onPress={() => navigate('SignUp')}>
 					<Text style={styles.link}>Зарегестрируйтесь!</Text>
 				</TouchableOpacity>

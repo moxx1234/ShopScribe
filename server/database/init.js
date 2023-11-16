@@ -43,12 +43,23 @@ const Shop = sequelize.define('shop', {
 	},
 	name: {
 		type: DataTypes.STRING,
-		allowNull: true,
+		allowNull: false,
 		unique: 'name'
 	},
-	category: {
+	owner: {
 		type: DataTypes.STRING,
 		allowNull: false,
+	},
+	phone: {
+		type: DataTypes.STRING,
+		allowNull: false,
+	},
+	address: {
+		type: DataTypes.STRING,
+		allowNull: false,
+	},
+	remark: {
+		type: DataTypes.TEXT,
 	},
 })
 

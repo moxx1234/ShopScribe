@@ -1,6 +1,5 @@
 import { Text, TouchableOpacity } from "react-native"
 
-
 const IconButton = ({ name, style, size, Icon, onPress }) => {
 	return (
 		<TouchableOpacity onPress={onPress} style={style} >

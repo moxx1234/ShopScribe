@@ -1,15 +1,17 @@
 import 'react-native-gesture-handler'
 import React from 'react'
 import UserProvider from './app/context/UserProvider'
-
 import Layout from './app/screens/Layout'
+import ThemeProvider from './app/context/ThemeProvider'
 
 const App = () => {
 
 	return (
-		<UserProvider>
-			<Layout />
-		</UserProvider>
+		<ThemeProvider>
+			<UserProvider>
+				<Layout />
+			</UserProvider>
+		</ThemeProvider>
 	)
 }
 
