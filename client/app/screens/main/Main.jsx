@@ -1,14 +1,46 @@
-import { View, Text, StyleSheet } from "react-native"
-import IconButton from "../../components/IconButton"
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import { useState, useEffect } from "react"
+import { StyleSheet, View } from "react-native"
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import CustomModal from "../../components/CustomModal"
-import AddShopForm from "../../components/shops/AddShopForm"
-import { useState } from "react"
-import ShopsList from "../../components/shops/ShopsList"
+import IconButton from "../../components/IconButton"
+import AddShopForm from "../shop/AddShopForm"
+import ShopsList from "../shop/ShopsList"
+import { ScrollView } from "react-native-gesture-handler"
+import { getShops, addShop } from "../../../api/shops"
 
 const Main = () => {
 	const [modalOpen, setModalOpen] = useState(false)
+	const [shops, setShops] = useState()
+	const [isRefreshing, setIsRefreshing] = useState(false)
 
+	useEffect(() => {
+		getShops()
+			.then(response => setShops(response.shops))
+			.catch(error => console.error(error))
+	}, [])
+
+	const handleRefresh = () => {
+		setIsRefreshing(true)
+		getShops()
+			.then(response => setShops(response.shops))
+			.catch(error => console.error(error))
+			.finally(() => setIsRefreshing(false))
+	}
+	const handleSubmit = (values, onSubmitProps) => {
+		const trimmedValues = Object.entries(values).reduce((result, [field, value]) => result = ({ ...result, [field]: value.trim() }), {})
+		addShop(trimmedValues)
+			.then(response => {
+				alert(response.message)
+				setModalOpen(false)
+				handleRefresh()
+			})
+			.catch(error => {
+				if (error.field) return onSubmitProps.setErrors({ [error.field]: [error.message] })
+				if (error.message) return alert(error)
+				alert(error)
+			})
+			.finally(() => { onSubmitProps.setSubmitting(false) })
+	}
 	const handlePress = () => {
 		setModalOpen(true)
 	}
@@ -22,14 +54,21 @@ const Main = () => {
 				onClose={handleClose}
 				title='Добавить магазин'
 			>
-				<AddShopForm onModalClose={handleClose} />
+				<ScrollView>
+					<AddShopForm onSubmit={handleSubmit} />
+				</ScrollView>
 			</CustomModal>
-			<ShopsList />
+			<ShopsList
+				modalOpen={modalOpen}
+				onRefresh={handleRefresh}
+				data={shops}
+				isRefreshing={isRefreshing}
+			/>
 			<IconButton
-				Icon={MaterialIcons}
+				Icon={Ionicons}
 				size={50}
-				name='add-shopping-cart'
-				style={{ ...styles.buttonWrapper, ...styles.buttonIcon }}
+				name='add-sharp'
+				style={[styles.buttonWrapper, styles.buttonIcon]}
 				onPress={handlePress}
 			/>
 		</View>

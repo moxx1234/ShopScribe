@@ -7,7 +7,7 @@ const IconButton = ({ name, style, size, Icon, onPress }) => {
 				<Icon
 					name={name}
 					size={size}
-					style={{ ...style, backgroundColor: 'transparent' }}
+					style={[style, { backgroundColor: 'transparent' }]}
 				/>
 			</Text>
 		</TouchableOpacity>

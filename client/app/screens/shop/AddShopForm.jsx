@@ -1,39 +1,25 @@
 import { View } from 'react-native'
 import { Formik } from 'formik'
 import * as yup from 'yup'
-import SubmitButton from '../form/SubmitButton'
-import InputGroup from '../form/InputGroup'
+import SubmitButton from '../../components/form/SubmitButton'
+import InputGroup from '../../components/form/InputGroup'
 import { addShop } from '../../../api/shops'
 
-const AddShopForm = ({ onModalClose = null }) => {
+const AddShopForm = ({ onSubmit }) => {
 	const initialValues = { name: '', owner: '', phone: '', address: '', remark: '' }
 
 	const schema = yup.object({
 		name: yup.string().trim().required('Введите название магазина'),
 		owner: yup.string().trim().required('Введите имя владельца'),
-		phone: yup.number().required('Введите номер телефона'),
+		phone: yup.string().required('Введите номер телефона'),
 		address: yup.string().trim().required('Введите адрес')
 	})
 
-	const handleSubmit = (values, onSubmitProps) => {
-		const trimmedValues = Object.entries(values).reduce((result, [field, value]) => result = ({ ...result, [field]: value.trim() }), {})
-		addShop(trimmedValues)
-			.then(response => {
-				alert(response.message)
-				if (onModalClose) onModalClose()
-			})
-			.catch(error => {
-				if (error.field) return onSubmitProps.setErrors({ [error.field]: [error.message] })
-				if (error.message) return alert(error)
-				alert(error)
-			})
-			.finally(() => { onSubmitProps.setSubmitting(false) })
-	}
 
 	return (
 		<Formik
 			initialValues={initialValues}
-			onSubmit={handleSubmit}
+			onSubmit={onSubmit}
 			validationSchema={schema}
 		>
 			{({ handleChange, handleBlur, handleSubmit, values, errors, isSubmitting, isValid, touched }) => (

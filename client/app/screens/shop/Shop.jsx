@@ -1,4 +1,4 @@
-import { ScrollView, Text, StyleSheet, View } from "react-native"
+import { ScrollView, StyleSheet, Text, View } from "react-native"
 import { useTheme } from '../../context/ThemeProvider'
 
 const Shop = ({ route }) => {
