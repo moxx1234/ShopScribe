@@ -1,14 +1,17 @@
 import { Text, StyleSheet, View } from "react-native"
 import InputField from "./InputField"
 import { useTheme } from "../../context/ThemeProvider"
+import { Field, useField } from "formik"
 
-const InputGroup = ({ label, error, touched, ...props }) => {
+const InputGroup = ({ label, ...props }) => {
 	const { themeStyles } = useTheme()
+	const [field, meta, helpers] = useField(props)
+	const { error, touched } = meta
 	const inputStyle = [styles.input, themeStyles.border, themeStyles.text, (error && touched) && styles.errorInput]
 	return (
 		<View>
 			<Text style={[styles.label, themeStyles.text]}>{label}</Text>
-			<InputField error={error} style={inputStyle} {...props} />
+			<Field as={InputField} style={inputStyle} {...props} />
 			{(error && touched) && <Text style={styles.errorMessage}>{error}</Text>}
 		</View>
 	)

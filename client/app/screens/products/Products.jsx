@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react'
-import { RefreshControl, StyleSheet, Text, View } from 'react-native'
+import { RefreshControl, StyleSheet, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import * as yup from 'yup'
 import { addProduct, getProducts } from '../../../api/products'
 import CustomModal from '../../components/CustomModal'
 import IconButton from '../../components/IconButton'
-import { useTheme } from '../../context/ThemeProvider'
-import AddProductForm from './AddProductForm'
+import Form from '../../components/form/Form'
+import InputGroup from '../../components/form/InputGroup'
+import SubmitButton from '../../components/form/SubmitButton'
 import Table from '../../components/table/Table'
 
 const Products = () => {
-	const { themeStyles } = useTheme()
 	const [modalOpen, setModalOpen] = useState(false)
 	const [isRefreshing, setIsRefreshing] = useState(false)
 	const [products, setProducts] = useState()
@@ -20,6 +21,16 @@ const Products = () => {
 			.then(response => setProducts(response.products))
 			.catch(error => console.error(error))
 	}, [])
+
+	const initialValues = { name: '', category: '', units: '', price: '', quantity: '' }
+
+	const schema = yup.object({
+		name: yup.string().required('Заполните имя!'),
+		category: yup.string().required('Заполните это поле!'),
+		units: yup.string().required('Укажите единицу измерения!'),
+		price: yup.number().required('Укажите цену за единицу товара!'),
+		quantity: yup.number().required('Укажите количество товара!')
+	})
 
 	const handleSubmit = (values, onSubmitProps) => {
 		const trimmedValues = Object.entries(values).reduce((result, [field, value]) => result = ({ ...result, [field]: value.trim() }), {})
@@ -56,12 +67,15 @@ const Products = () => {
 
 	return (
 		<View style={{ flex: 1 }}>
-			<CustomModal
-				isOpen={modalOpen}
-				onClose={handleClose}
-				title='Добавить товар'
-			>
-				<AddProductForm onSubmit={handleSubmit} />
+			<CustomModal isOpen={modalOpen} onClose={handleClose} title='Добавить товар'>
+				<Form initialValues={initialValues} schema={schema} onSubmit={handleSubmit}>
+					<InputGroup name='name' label='Название' type='text' />
+					<InputGroup name='category' label='Категория' type='text' />
+					<InputGroup name='units' label='Единицы измерения' type='text' />
+					<InputGroup name='price' label='Цена' type='number' />
+					<InputGroup name='quantity' label='Количество' type='number' />
+					<SubmitButton title='Создать' />
+				</Form>
 			</CustomModal>
 			<ScrollView
 				refreshControl={<RefreshControl onRefresh={handleRefresh} refreshing={isRefreshing} />}

@@ -1,9 +1,7 @@
-import { View } from 'react-native'
-import { Formik } from 'formik'
 import * as yup from 'yup'
-import SubmitButton from '../../components/form/SubmitButton'
+import Form from '../../components/form/Form'
 import InputGroup from '../../components/form/InputGroup'
-import { addShop } from '../../../api/shops'
+import SubmitButton from '../../components/form/SubmitButton'
 
 const AddShopForm = ({ onSubmit }) => {
 	const initialValues = { name: '', owner: '', phone: '', address: '', remark: '' }
@@ -15,69 +13,15 @@ const AddShopForm = ({ onSubmit }) => {
 		address: yup.string().trim().required('Введите адрес')
 	})
 
-
 	return (
-		<Formik
-			initialValues={initialValues}
-			onSubmit={onSubmit}
-			validationSchema={schema}
-		>
-			{({ handleChange, handleBlur, handleSubmit, values, errors, isSubmitting, isValid, touched }) => (
-				<View>
-					<InputGroup
-						name='name'
-						label='Название'
-						type='text'
-						onChange={handleChange}
-						onBlur={handleBlur}
-						value={values.name}
-						error={errors.name}
-						touched={touched.name}
-					/>
-					<InputGroup
-						name='owner'
-						label='Имя владельца'
-						type='text'
-						onChange={handleChange}
-						onBlur={handleBlur}
-						value={values.owner}
-						error={errors.owner}
-						touched={touched.owner}
-					/>
-					<InputGroup
-						name='phone'
-						label='Номер телефона'
-						type='phone'
-						onChange={handleChange}
-						onBlur={handleBlur}
-						value={values.phone}
-						error={errors.phone}
-						touched={touched.phone}
-					/>
-					<InputGroup
-						name='address'
-						label='Адрес'
-						type='text'
-						onChange={handleChange}
-						onBlur={handleBlur}
-						value={values.address}
-						error={errors.address}
-						touched={touched.address}
-					/>
-					<InputGroup
-						name='remark'
-						label='Примечание'
-						type='textarea'
-						onChange={handleChange}
-						onBlur={handleBlur}
-						value={values.remark}
-						error={errors.remark}
-						touched={touched.remark}
-					/>
-					<SubmitButton title='Создать' onSubmit={handleSubmit} disabledProps={[isSubmitting, isValid, touched]} />
-				</View>
-			)}
-		</Formik>
+		<Form initialValues={initialValues} onSubmit={onSubmit} schema={schema}>
+			<InputGroup name='name' label='Название' type='text' />
+			<InputGroup name='owner' label='Имя владельца' type='text' />
+			<InputGroup name='phone' label='Номер телефона' type='phone' />
+			<InputGroup name='address' label='Адрес' type='text' />
+			<InputGroup name='remark' label='Примечание' type='textarea' />
+			<SubmitButton title='Создать' />
+		</Form>
 	)
 }
 

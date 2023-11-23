@@ -1,14 +1,54 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import SignInForm from './SignInForm'
 import { useTheme } from '../../context/ThemeProvider'
+import * as yup from 'yup'
+import * as SecureStore from 'expo-secure-store'
+import { authenticateUser, authorizeUser } from '../../../api/auth'
+import { useAuthUpdate } from "../../context/UserProvider"
+import Form from '../../components/form/Form'
 
 const SignInScreen = ({ navigation }) => {
 	const navigate = (page) => navigation.navigate(page)
 	const { themeStyles } = useTheme()
+	const updateUserState = useAuthUpdate()
+
+	const initialValues = { email: '', password: '' }
+
+	const schema = yup.object({
+		email: yup.string().email('Неверный email').required('Введите свой email'),
+		password: yup.string().required('Введите свой пароль')
+	})
+
+	const handleSubmit = (values, onSubmitProps) => {
+		authenticateUser('login', values)
+			.then((response) => {
+				SecureStore.setItemAsync('token', response.JWT)
+				console.log(response)
+				authorizeUser(response.JWT).then(response => {
+					updateUserState({ type: 'login', setAdmin: response.isAdmin })
+				})
+			})
+			.catch(error => {
+				if (error.field) return onSubmitProps.setErrors({ [error.field]: [error.message] })
+				alert(error)
+			})
+			.finally(() => { onSubmitProps.setSubmitting(false) })
+	}
 	return (
 		<View style={styles.container}>
 			<Text style={[styles.title, themeStyles.text]}>Войдите, чтобы продолжить!</Text>
-			<SignInForm />
+			<Form initialValues={initialValues} schema={schema} onSubmit={handleSubmit}>
+				<InputGroup
+					name='email'
+					label='Email'
+					type='email'
+				/>
+				<InputGroup
+					name='password'
+					label='Пароль'
+					type='password'
+				/>
+				<SubmitButton title='Войти' />
+			</Form>
 			<View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', marginTop: 30 }}>
 				<Text style={[{ fontSize: 18 }, themeStyles.text]}>Нет аккаунта?</Text>
 				<TouchableOpacity onPress={() => navigate('SignUp')}>

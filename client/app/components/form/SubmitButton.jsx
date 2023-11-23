@@ -1,10 +1,11 @@
+import { useFormikContext } from 'formik'
 import { TouchableOpacity, Text, StyleSheet } from 'react-native'
 
-const SubmitButton = ({ title, onSubmit, disabledProps }) => {
-	const [isSubmitting, isValid, touched] = disabledProps
+const SubmitButton = ({ title }) => {
+	const { isSubmitting, isValid, touched, handleSubmit } = useFormikContext()
 	const disabled = isSubmitting || (Object.values(touched).some(value => value === true) && !isValid)
 	return (
-		<TouchableOpacity disabled={disabled} onPress={onSubmit} style={[styles.button, disabled && styles.disabled]}>
+		<TouchableOpacity disabled={disabled} onPress={handleSubmit} style={[styles.button, disabled && styles.disabled]}>
 			<Text style={styles.text}>{title}</Text>
 		</TouchableOpacity>
 	)
