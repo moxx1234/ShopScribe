@@ -1,10 +1,12 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { useTheme } from '../../context/ThemeProvider'
-import * as yup from 'yup'
 import * as SecureStore from 'expo-secure-store'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import * as yup from 'yup'
 import { authenticateUser, authorizeUser } from '../../../api/auth'
-import { useAuthUpdate } from "../../context/UserProvider"
 import Form from '../../components/form/Form'
+import InputGroup from '../../components/form/InputGroup'
+import SubmitButton from '../../components/form/SubmitButton'
+import { useTheme } from '../../context/ThemeProvider'
+import { useAuthUpdate } from "../../context/UserProvider"
 
 const SignInScreen = ({ navigation }) => {
 	const navigate = (page) => navigation.navigate(page)
@@ -37,16 +39,8 @@ const SignInScreen = ({ navigation }) => {
 		<View style={styles.container}>
 			<Text style={[styles.title, themeStyles.text]}>Войдите, чтобы продолжить!</Text>
 			<Form initialValues={initialValues} schema={schema} onSubmit={handleSubmit}>
-				<InputGroup
-					name='email'
-					label='Email'
-					type='email'
-				/>
-				<InputGroup
-					name='password'
-					label='Пароль'
-					type='password'
-				/>
+				<InputGroup name='email' label='Email' type='email' />
+				<InputGroup name='password' label='Пароль' type='password' />
 				<SubmitButton title='Войти' />
 			</Form>
 			<View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', marginTop: 30 }}>

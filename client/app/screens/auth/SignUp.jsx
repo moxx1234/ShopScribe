@@ -3,6 +3,8 @@ import { StyleSheet, View } from 'react-native'
 import * as yup from 'yup'
 import { authenticateUser, authorizeUser } from "../../../api/auth"
 import Form from '../../components/form/Form'
+import InputGroup from '../../components/form/InputGroup'
+import SubmitButton from '../../components/form/SubmitButton'
 import { useAuthUpdate } from "../../context/UserProvider"
 
 const SignUpScreen = () => {
