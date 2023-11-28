@@ -1,7 +1,7 @@
 import * as yup from 'yup'
-import Form from '../../components/form/Form'
-import InputGroup from '../../components/form/InputGroup'
-import SubmitButton from '../../components/form/SubmitButton'
+import Form from './Form'
+import InputGroup from './InputGroup'
+import SubmitButton from './SubmitButton'
 
 const AddShopForm = ({ onSubmit }) => {
 	const initialValues = { name: '', owner: '', phone: '', address: '', remark: '' }

@@ -1,29 +1,40 @@
+import { useEffect, useState } from "react"
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
-import { useTheme } from '../../context/ThemeProvider'
-import { useState } from "react"
+import { getProducts } from '../../../api/products'
 import CustomModal from "../../components/CustomModal"
-import Form from "../../components/form/Form"
-import * as yup from 'yup'
-import InputGroup from "../../components/form/InputGroup"
-import SubmitButton from '../../components/form/SubmitButton'
+import { useTheme } from '../../context/ThemeProvider'
+import CreateOrder from "./CreateOrder"
+import { createDeal } from "../../../api/sales"
 
 const Shop = ({ route }) => {
+	const shop = route.params.shop
+
 	const { themeStyles } = useTheme()
 	const [modalOpen, setModalOpen] = useState(false)
-	const initialValues = { product: '', quantity: '' }
+	const [products, setProducts] = useState([])
 
-	const market = route.params.market
+	useEffect(() => {
+		getProducts()
+			.then(response => setProducts(response.products))
+			.catch(error => console.error(error))
+	}, [])
 
-	const schema = yup.object({
-		product: yup.string().required('Выберите товар!')
-	})
-
-	const handleSubmit = (values, onSubmitProps) => {
-
+	const handleDealCreate = (addedProducts) => {
+		const addedProductsInfo = addedProducts.map(({ id, quantity }) => ({ productId: id, productQty: quantity }))
+		createDeal(shop.id, addedProductsInfo)
+			.then(response => {
+				if (response.message) {
+					setModalOpen(false)
+					return alert(response.message)
+				}
+				console.log(response)
+			})
+			.catch(error => console.error(error))
 	}
+
 	return (
 		<ScrollView style={{ padding: 15 }}>
-			{Object.entries(market).map(([key, value]) => (
+			{Object.entries(shop).map(([key, value]) => (
 				value && key !== 'id' && (
 					<View key={key} style={styles.container}>
 						<Text style={[themeStyles.text, styles.key]}>{`${key}:`}</Text>
@@ -32,15 +43,11 @@ const Shop = ({ route }) => {
 				)
 			))}
 			<View style={styles.section}>
-				<CustomModal isOpen={modalOpen} onClose={() => setModalOpen(false)} title='Создать продажу'>
-					<ScrollView>
-						<Form initialValues={initialValues} schema={schema} onSubmit={handleSubmit}>
-							<InputGroup name='product' label='Выберите товар' type='text' />
-							<InputGroup name='quantity' label='Количество' type='text' />
-							<SubmitButton title='Создать' />
-						</Form>
-					</ScrollView>
-				</CustomModal>
+				{!!products.length && (
+					<CustomModal isOpen={modalOpen} onClose={() => setModalOpen(false)} title='Создать продажу'>
+						<CreateOrder products={products} onDealCreate={handleDealCreate} />
+					</CustomModal>
+				)}
 				<View style={[styles.container, styles.sectionHeader]}>
 					<Text style={[themeStyles.text, styles.title]}>Продажи</Text>
 					<TouchableOpacity style={styles.buttonContainer} onPress={() => setModalOpen(true)}>

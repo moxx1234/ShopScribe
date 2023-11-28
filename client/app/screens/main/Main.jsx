@@ -1,12 +1,12 @@
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 import { StyleSheet, View } from "react-native"
+import { ScrollView } from "react-native-gesture-handler"
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import { addShop, getShops } from "../../../api/shops"
 import CustomModal from "../../components/CustomModal"
 import IconButton from "../../components/IconButton"
-import AddShopForm from "../shop/AddShopForm"
+import AddShopForm from "../../components/form/AddShopForm"
 import ShopsList from "../shop/ShopsList"
-import { ScrollView } from "react-native-gesture-handler"
-import { getShops, addShop } from "../../../api/shops"
 
 const Main = () => {
 	const [modalOpen, setModalOpen] = useState(false)

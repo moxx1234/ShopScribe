@@ -1,9 +1,20 @@
-import React from 'react'
+import { useField } from 'formik'
+import React, { useState } from 'react'
 import DropDown from 'react-native-input-select'
 
 const SelectField = (props) => {
+	const [field, meta, helpers] = useField(props)
+	const handleChange = (item) => {
+		helpers.setValue(item)
+	}
 	return (
-		<DropDown options={props.options} onValueChange={props.onChange} {...props} />
+		<DropDown
+			isSearchable
+			options={props.options}
+			onValueChange={handleChange}
+			selectedValue={field.value}
+			{...props}
+		/>
 	)
 }
 

@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const auth = require('./routes/auth.js')
 const shops = require('./routes/shops.js')
 const products = require('./routes/products.js')
+const sales = require('./routes/sales.js')
 
 const app = express()
 const port = 8000
@@ -16,6 +17,7 @@ app.use(bodyParser.json())
 app.use('/auth', auth)
 app.use('/shops', shops)
 app.use('/products', products)
+app.use('/sales', sales)
 
 app.get('/', (req, res) => {
 	res.send('Hello World!')

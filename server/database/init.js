@@ -93,6 +93,16 @@ const Product = sequelize.define('product', {
 	}
 })
 
+const ProductSale = sequelize.define('product_Sale', {
+	productQty: {
+		type: DataTypes.INTEGER,
+		allowNull: false
+	},
+})
+Shop.hasMany(ProductSale)
+Product.hasMany(ProductSale)
+ProductSale.belongsTo(Shop)
+
 sequelize.sync({ alter: true }).then(() => {
 	console.log('tables had been synchronised')
 }).catch((err) => console.log('table sync error', err))
@@ -103,4 +113,4 @@ useBcrypt(User, {
 	compare: 'authenticate'
 })
 
-module.exports = { User, Shop, Product }
+module.exports = { sequelize, User, Shop, Product, ProductSale }

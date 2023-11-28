@@ -12,7 +12,7 @@ const ShopsList = ({ onRefresh, isRefreshing, data }) => {
 
 	const handleMarketChoice = (id) => {
 		const marketInfo = data.find(market => market.id === id)
-		navigation.navigate('Market', { market: marketInfo })
+		navigation.navigate('Shop', { shop: marketInfo })
 	}
 
 	return (

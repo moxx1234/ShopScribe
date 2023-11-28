@@ -28,7 +28,7 @@ const Layout = () => {
 									isSignedIn ?
 										<>
 											<Stack.Screen name='Navigator' options={{ headerShown: false }} component={Navigator} />
-											<Stack.Screen name='Market' options={{ title: 'Магазин' }} component={Shop} />
+											<Stack.Screen name='Shop' options={{ title: 'Магазин' }} component={Shop} />
 										</>
 										:
 										<>
