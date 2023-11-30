@@ -93,15 +93,38 @@ const Product = sequelize.define('product', {
 	}
 })
 
-const ProductSale = sequelize.define('product_Sale', {
+const ShopSale = sequelize.define('shop_sale', {
+	id: {
+		type: DataTypes.UUID,
+		defaultValue: DataTypes.UUIDV4,
+		primaryKey: true,
+		unique: 'id'
+	},
+	total: {
+		type: DataTypes.INTEGER,
+		allowNull: false
+	}
+})
+
+const ProductSale = sequelize.define('product_sale', {
+	id: {
+		type: DataTypes.UUID,
+		defaultValue: DataTypes.UUIDV4,
+		primaryKey: true,
+		unique: 'id'
+	},
 	productQty: {
 		type: DataTypes.INTEGER,
 		allowNull: false
 	},
 })
-Shop.hasMany(ProductSale)
+
+Shop.hasMany(ShopSale)
+ShopSale.belongsTo(Shop)
+ShopSale.hasMany(ProductSale)
+ProductSale.belongsTo(ShopSale)
+ProductSale.belongsTo(Product)
 Product.hasMany(ProductSale)
-ProductSale.belongsTo(Shop)
 
 sequelize.sync({ alter: true }).then(() => {
 	console.log('tables had been synchronised')
@@ -113,4 +136,4 @@ useBcrypt(User, {
 	compare: 'authenticate'
 })
 
-module.exports = { sequelize, User, Shop, Product, ProductSale }
+module.exports = { sequelize, User, Shop, Product, ProductSale, ShopSale }

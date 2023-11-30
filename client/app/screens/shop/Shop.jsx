@@ -4,7 +4,8 @@ import { getProducts } from '../../../api/products'
 import CustomModal from "../../components/CustomModal"
 import { useTheme } from '../../context/ThemeProvider'
 import CreateOrder from "./CreateOrder"
-import { createDeal } from "../../../api/sales"
+import { createDeal, getDeal } from "../../../api/sales"
+import SalesList from "../../components/SalesList"
 
 const Shop = ({ route }) => {
 	const shop = route.params.shop
@@ -12,23 +13,31 @@ const Shop = ({ route }) => {
 	const { themeStyles } = useTheme()
 	const [modalOpen, setModalOpen] = useState(false)
 	const [products, setProducts] = useState([])
+	const [sales, setSales] = useState([])
 
 	useEffect(() => {
+		getSales()
 		getProducts()
 			.then(response => setProducts(response.products))
 			.catch(error => console.error(error))
 	}, [])
 
 	const handleDealCreate = (addedProducts) => {
-		const addedProductsInfo = addedProducts.map(({ id, quantity }) => ({ productId: id, productQty: quantity }))
-		createDeal(shop.id, addedProductsInfo)
+		createDeal(shop.id, addedProducts)
 			.then(response => {
 				if (response.message) {
 					setModalOpen(false)
+					getSales()
 					return alert(response.message)
 				}
 				console.log(response)
 			})
+			.catch(error => console.error(error))
+	}
+
+	const getSales = () => {
+		getDeal(shop.id)
+			.then(response => setSales(response.sales))
 			.catch(error => console.error(error))
 	}
 
@@ -53,6 +62,7 @@ const Shop = ({ route }) => {
 					<TouchableOpacity style={styles.buttonContainer} onPress={() => setModalOpen(true)}>
 						<Text style={styles.buttonText}>Создать продажу +</Text>
 					</TouchableOpacity>
+					{!!sales.length && <SalesList sales={sales} />}
 				</View>
 			</View>
 		</ScrollView>

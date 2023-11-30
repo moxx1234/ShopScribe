@@ -22,7 +22,6 @@ export const addShop = async (shopInfo) => {
 export const getShops = async () => {
 	const URL = `${BACK_URL}/shops/all`
 	return await fetch(URL, {
-		method: 'GET',
 		headers
 	})
 		.then(async (response) => {
