@@ -4,7 +4,7 @@ import { getProducts } from '../../../api/products'
 import CustomModal from "../../components/CustomModal"
 import { useTheme } from '../../context/ThemeProvider'
 import CreateOrder from "./CreateOrder"
-import { createDeal, getDeal } from "../../../api/sales"
+import { createDeal, getDeals } from "../../../api/sales"
 import SalesList from "../../components/SalesList"
 
 const Shop = ({ route }) => {
@@ -36,7 +36,7 @@ const Shop = ({ route }) => {
 	}
 
 	const getSales = () => {
-		getDeal(shop.id)
+		getDeals(shop.id)
 			.then(response => setSales(response.sales))
 			.catch(error => console.error(error))
 	}

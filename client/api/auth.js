@@ -43,6 +43,16 @@ export const authorizeUser = async () => {
 			throw error
 		})
 }
+export const authorizeAdmin = async () => {
+	return await authorizeUser()
+		.then(response => {
+			if (!response.isAdmin) {
+				throw { message: 'Unauthorized attempt to secured resource!' }
+			}
+			return { isAdmin: response.isAdmin }
+		})
+		.catch(error => error.message || error)
+}
 export const endUserSession = () => {
 	SecureStore.deleteItemAsync('token')
 }

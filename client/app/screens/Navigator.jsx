@@ -7,6 +7,7 @@ import { useAuth, useAuthUpdate } from '../context/UserProvider'
 import AdminControls from './admin/AdminControls'
 import Main from './main/Main'
 import Products from './products/Products'
+import Reports from './reports/Reports'
 
 const Drawer = createDrawerNavigator()
 
@@ -50,7 +51,12 @@ const Navigator = () => {
 			<Drawer.Screen name='Home' options={{ title: 'Главная' }} component={Main} />
 			<Drawer.Screen name='Products' options={{ title: 'Товары' }} component={Products} />
 			{
-				isAdmin && <Drawer.Screen name='AdminPanel' options={{ title: 'Панель управления' }} component={AdminControls} />
+				isAdmin && (
+					<>
+						<Drawer.Screen name='AdminPanel' options={{ title: 'Панель управления' }} component={AdminControls} />
+						<Drawer.Screen name='Reports' options={{ title: 'Отчеты' }} component={Reports} />
+					</>
+				)
 			}
 		</Drawer.Navigator>
 	)

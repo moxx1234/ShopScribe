@@ -2,8 +2,9 @@ import { REACT_APP_DEV_BACKEND_URL as BACK_URL } from '@env'
 
 const headers = { 'Content-Type': 'application/json' }
 
-export const getDeal = async (shopId) => {
-	const URL = `${BACK_URL}/sales?${new URLSearchParams({ shopId })}`
+export const getDeals = async (shopId = null) => {
+	const query = shopId ? `?${new URLSearchParams({ shopId })}` : ''
+	const URL = `${BACK_URL}/sales${query}`
 	return await fetch(URL, {
 		headers
 	})

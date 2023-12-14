@@ -6,7 +6,6 @@ const authenticateToken = (req, res, next) => {
 	const token = authHeader && authHeader.split(' ')[1]
 	if (!token) return res.status(401).json({ message: 'no token' })
 	jwt.verify(token, ACCESS_TOKEN, (err, user) => {
-		console.log(err)
 		if (err) return res.sendStatus(403).json({ message: 'invalid token' })
 		req.user = user
 		next()

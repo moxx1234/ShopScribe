@@ -8,7 +8,9 @@ import Loading from './Loading'
 import Navigator from './Navigator'
 import SignInScreen from './auth/SignIn'
 import SignUpScreen from './auth/SignUp'
+import ProductSales from './productSales/ProductSales'
 import Shop from './shop/Shop'
+import DateReport from './dateReport/DateReport'
 
 const Stack = createNativeStackNavigator()
 
@@ -29,6 +31,8 @@ const Layout = () => {
 										<>
 											<Stack.Screen name='Navigator' options={{ headerShown: false }} component={Navigator} />
 											<Stack.Screen name='Shop' options={{ title: 'Магазин' }} component={Shop} />
+											<Stack.Screen name='ProductSales' component={ProductSales} />
+											<Stack.Screen name='Report' component={DateReport} />
 										</>
 										:
 										<>
